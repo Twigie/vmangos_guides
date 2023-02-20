@@ -1,0 +1,21 @@
+#!/bin/bash
+#libmariadb-dev
+apt install -qq -y g++ libace-dev libtbb-dev git cmake libmariadb-dev-compat openssl libssl-dev build-essential checkinstall zlib1g-dev
+export TBB_ROOT_DIR=/usr/include/tbb
+export ACE_ROOT=/usr/include/ace
+
+mkdir /opt/vmangos
+git clone -b development https://github.com/vmangos/core /opt/vmangos/core
+git clone https://github.com/brotalnia/database.git /opt/vmangos/db
+mkdir build
+cd build
+cmake ~/vmangos/core -DDEBUG=0 -DSUPPORTED_CLIENT_BUILD=5875 -DUSE_EXTRACTORS=0 -DCMAKE_INSTALL_PREFIX=/opt/vmangos
+make -j4
+make install
+
+mv /opt/vmangos/etc/mangosd.conf.dist /opt/vmangos/etc/mangosd.conf
+mv /opt/vmangos/etc/realmd.conf.dist /opt/vmangos/etc/realmd.conf
+
+
+# Run to setup maria server sudo mysql_secure_installation
+echo Please run sudo mysql_secure_installation to setup the maria server
